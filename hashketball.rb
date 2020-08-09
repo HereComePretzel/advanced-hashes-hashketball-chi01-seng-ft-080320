@@ -126,28 +126,28 @@ def game_hash
   }
 end
 
-def num_points_scored(player_points)
-  game_hash.each do |location, team_attributes|
+def num_points_scored(name)
+  game_hash.map do |location, team_attributes|
     team_attributes[:players].each do |player|
-      if player[:player_name] == player_points
+      if player[:player_name] == name
         return player[:points]
       end
     end
   end
 end
 
-def shoe_size(shoes)
-  game_hash.each do |location, team_attributes|
+def shoe_size(name)
+  game_hash.map do |location, team_attributes|
     team_attributes[:players].each do |player|
-      if player[:player_name] == shoes
+      if player[:player_name] == name 
         return player[:shoe]
       end
     end
   end
 end 
 
-def team_colors(team)
- if team == "Brooklyn Nets"
+def team_colors(team_name)
+ if team_name == "Brooklyn Nets"
    return game_hash[:home][:colors]
  else
    return game_hash[:away][:colors]
@@ -160,13 +160,13 @@ def team_names
   end 
 end 
 
-def  player_numbers(name)
+def  player_numbers(team_name)
   output = [] 
-  game_hash.each do |team, team_info|
-    if team_info[:team_name] == name 
-      team_info.each do |key, value|
-        if key == :players 
-          value.each do |player|
+  game_hash.map do |home_away, team_stats|
+    if team_stats[:team_name] == team_name 
+      team_stats.each do |players, player_name|
+        if players == :players 
+          player_name.each do |player|
             output.push(player[:number])
           end 
         end 
@@ -177,7 +177,7 @@ def  player_numbers(name)
 end 
 
 def player_stats(name)
-  game_hash.each do |team, team_info|
+  game_hash.map do |team, team_info|
     team_info[:players].each do |player|
       if player[:player_name] == name
         return player 
@@ -189,7 +189,7 @@ end
 def big_shoe_rebounds
   big_shoe = 0 
   rebounds = 0 
-  game_hash.each do |location, team_attributes|
+  game_hash.map do |location, team_attributes|
     team_attributes[:players].each do |player|
       if player[:shoe] > big_shoe
       big_shoe = player[:shoe] 
